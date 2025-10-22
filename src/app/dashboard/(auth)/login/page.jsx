@@ -1,11 +1,10 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Suspense } from "react";
 
 const Login = () => {
   const { status } = useSession(); 
@@ -38,8 +37,6 @@ const Login = () => {
   };
 
   return (
-        <Suspense fallback={<p>Loading login...</p>}>
-
     <div className="flex flex-col items-center gap-5 mt-10">
       <h1 className="text-2xl font-bold ">
         {success ? success : "Welcome Back"}
@@ -84,7 +81,7 @@ const Login = () => {
         Login with GitHub
       </button>
 
-      <span >- OR -</span>
+      <span>- OR -</span>
 
       <Link
         href="/dashboard/register"
@@ -93,8 +90,14 @@ const Login = () => {
         Create new account
       </Link>
     </div>
-    </Suspense>
   );
 };
 
-export default Login;
+// ✅ This wrapper adds the required Suspense boundary
+export default function LoginWrapper() {
+  return (
+    <Suspense fallback={<p>Loading login...</p>}>
+      <Login />
+    </Suspense>
+  );
+}
