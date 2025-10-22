@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const Login = () => {
   const { status } = useSession(); 
@@ -37,6 +38,8 @@ const Login = () => {
   };
 
   return (
+        <Suspense fallback={<p>Loading login...</p>}>
+
     <div className="flex flex-col items-center gap-5 mt-10">
       <h1 className="text-2xl font-bold ">
         {success ? success : "Welcome Back"}
@@ -90,6 +93,7 @@ const Login = () => {
         Create new account
       </Link>
     </div>
+    </Suspense>
   );
 };
 
