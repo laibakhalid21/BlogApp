@@ -25,7 +25,7 @@ const Dashboard = () => {
     const getData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/posts?username=${session?.user?.name}`, {
+        const res = await fetch(`https://blog-app-8qjp.vercel.app/api/posts?username=${session?.user?.name}`, {
           cache: "no-store",
         });
 
