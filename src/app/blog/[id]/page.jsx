@@ -4,8 +4,7 @@ import { notFound } from "next/navigation";
 
 async function getData(id) {
   // const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-    const res = await fetch(`https://blog-app-8qjp.vercel.app/api/posts/${id}`, {
-
+const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts/${id}`, {
     cache: "no-store",
   });
 
