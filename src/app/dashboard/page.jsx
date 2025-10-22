@@ -25,7 +25,7 @@ const Dashboard = () => {
     const getData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts?username=${session?.user?.name}`, {
+        const res = await fetch(`${process.env.NEXTAUTH_URL ||""}/api/posts?username=${session?.user?.name}`, {
           cache: "no-store",
         });
 
