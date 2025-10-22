@@ -8,7 +8,7 @@ import Image from "next/image";
 async function getData() {
   // const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
   //own api
-    const res = await fetch(`http://localhost:3000/api/posts`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`, {
 
   cache: "no-store",
   });
