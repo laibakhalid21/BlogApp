@@ -3,20 +3,25 @@ import { NextResponse } from "next/server"
 import postModel from "@/models/post"
 
 
-export const GET=async(request,{params})=>{
-    const {id}=await params
+export const GET = async (request, { params }) => {
+    const { id } = await params;
     try {
-        await DbConnect()
+        await DbConnect();
 
-        const post=await postModel.findById(id)
-        return new NextResponse(JSON.stringify(post),{status:200})
+        const post = await postModel.findById(id);
+        if (!post) {
+            return NextResponse.json({ error: "Post not found" }, { status: 404 });
+        }
         
+        return NextResponse.json(post, { status: 200 });
     } catch (error) {
-        return new NextResponse("DataBase error!",{status:500})
+        console.error("GET /api/posts/:id error:", error);
+        return NextResponse.json(
+            { error: "Database error", details: error.message }, 
+            { status: 500 }
+        );
     }
-    //fetch
-    
-}
+};
 
 
 export const DELETE = async (request, { params }) => {
@@ -24,9 +29,12 @@ export const DELETE = async (request, { params }) => {
   try {
     await DbConnect();
     await postModel.findByIdAndDelete(id);
-    return new NextResponse("Post deleted", { status: 200 });
+    return NextResponse.json({ message: "Post deleted" }, { status: 200 });
   } catch (error) {
     console.error("DELETE /api/posts/:id error:", error.message);
-    return new NextResponse(`Database error: ${error.message}`, { status: 500 });
+    return NextResponse.json(
+      { error: "Database error", details: error.message }, 
+      { status: 500 }
+    );
   }
 };

@@ -13,24 +13,34 @@ export const GET = async (request) => {
       ? await postModel.find({ username })
       : await postModel.find();
 
-    return new NextResponse(JSON.stringify(posts), { status: 200 });
+    return NextResponse.json(posts, { status: 200 });
   } catch (error) {
-    return new NextResponse("Database error!", { status: 500 });
+    console.error("GET /api/posts error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch posts", details: error.message }, 
+      { status: 500 }
+    );
   }
 };
 
 export const POST = async (request) => {
-  const body = await request.json();
-  const newPost = new postModel(body);
-  console.log(newPost)
-
   try {
+    const body = await request.json();
     await DbConnect();
+    
+    const newPost = new postModel(body);
     await newPost.save();
-    return new NextResponse("Post has been created", { status: 201 });
+    
+    return NextResponse.json(
+      { message: "Post has been created", post: newPost }, 
+      { status: 201 }
+    );
   } catch (error) {
-      console.error("POST /api/posts error:", error.message);
-    return new NextResponse("Database error!", { status: 500 });
+    console.error("POST /api/posts error:", error.message);
+    return NextResponse.json(
+      { error: "Failed to create post", details: error.message }, 
+      { status: 500 }
+    );
   }
 };
 

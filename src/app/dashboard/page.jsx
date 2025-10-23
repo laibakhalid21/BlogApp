@@ -6,12 +6,19 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 const Dashboard = () => {
+
+
   const { data: session, status } = useSession();
   const router = useRouter();
 
   const [data, setData] = useState([]);
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
+
+
+    const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || 
+    process.env.NEXTAUTH_URL;
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -25,9 +32,10 @@ const Dashboard = () => {
     const getData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${process.env.NEXTAUTH_URL ||""}/api/posts?username=${session?.user?.name}`, {
-          cache: "no-store",
-        });
+         const res = await fetch(
+          `/api/posts?username=${session?.user?.name}`,
+          { cache: "no-store" }
+        );
 
         if (!res.ok) {
           setErr(true);

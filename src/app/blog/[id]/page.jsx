@@ -3,10 +3,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 async function getData(id) {
-  // const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-const res = await fetch(`${process.env.NEXTAUTH_URL || ""}/api/posts/${id}`, {
-    cache: "no-store",
-  });
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${id}`, { cache: "no-store" });
+
 
   if (!res.ok) {
     return notFound();
